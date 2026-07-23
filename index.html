@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Expense Tracker</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background-color: #f5f6fa;
+            font-family: Arial, sans-serif;
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+        }
+
+        .balance-card {
+            border-top: 4px solid #0d6efd;
+        }
+
+        .income-card {
+            border-top: 4px solid #198754;
+        }
+
+        .expense-card {
+            border-top: 4px solid #dc3545;
+        }
+
+        .balance-card h3 {
+            color: #0d6efd;
+        }
+
+        .income-card h3 {
+            color: #198754;
+        }
+
+        .expense-card h3 {
+            color: #dc3545;
+        }
+
+        .income-text {
+            color: #198754;
+            font-weight: bold;
+        }
+
+        .expense-text {
+            color: #dc3545;
+            font-weight: bold;
+        }
+
+        table {
+            font-size: 14px;
+        }
+
+        footer {
+            background-color: #212529;
+            color: white;
+        }
+
+        @media (max-width: 576px) {
+            h2 {
+                font-size: 24px;
+            }
+
+            table {
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-dark bg-dark">
+        <div class="container">
+            <span class="navbar-brand">Expense Tracker</span>
+        </div>
+    </nav>
+
+
+    <div class="container my-5">
+
+        <!-- Heading -->
+        <div class="text-center mb-4">
+            <h2>Student Expense Tracker</h2>
+            <p class="text-muted">
+                Manage your daily income and expenses
+            </p>
+        </div>
+
+
+        <!-- Balance Section -->
+        <div class="row g-3 mb-4">
+
+            <div class="col-md-4">
+                <div class="card balance-card shadow-sm text-center">
+                    <div class="card-body">
+
+                        <h6>Total Balance</h6>
+                        <h3 id="balance">₹0</h3>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card income-card shadow-sm text-center">
+                    <div class="card-body">
+
+                        <h6>Total Income</h6>
+                        <h3 id="income">₹0</h3>
+
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-4">
+                <div class="card expense-card shadow-sm text-center">
+                    <div class="card-body">
+
+                        <h6>Total Expense</h6>
+                        <h3 id="expense">₹0</h3>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- Add Transaction -->
+            <div class="col-lg-5">
+
+                <div class="card shadow-sm">
+                    <div class="card-body">
+
+                        <h5 class="mb-3">
+                            Add Transaction
+                        </h5>
+
+
+                        <form id="transactionForm">
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Description
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="description"
+                                    class="form-control"
+                                    placeholder="Example: College lunch"
+                                    required>
+
+                            </div>
+
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Amount
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="amount"
+                                    class="form-control"
+                                    placeholder="Enter amount"
+                                    min="1"
+                                    required>
+
+                            </div>
+
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Type
+                                </label>
+
+                                <select
+                                    id="type"
+                                    class="form-select">
+
+                                    <option value="expense">
+                                        Expense
+                                    </option>
+
+                                    <option value="income">
+                                        Income
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="mb-3">
+
+                                <label class="form-label">
+                                    Category
+                                </label>
+
+                                <select
+                                    id="category"
+                                    class="form-select">
+
+                                    <option value="Food">
+                                        Food
+                                    </option>
+
+                                    <option value="Travel">
+                                        Travel
+                                    </option>
+
+                                    <option value="College">
+                                        College
+                                    </option>
+
+                                    <option value="Shopping">
+                                        Shopping
+                                    </option>
+
+                                    <option value="Salary">
+                                        Salary
+                                    </option>
+
+                                    <option value="Other">
+                                        Other
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100">
+
+                                Add Transaction
+
+                            </button>
+
+                        </form>
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- Transaction History -->
+            <div class="col-lg-7">
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+
+                            <h5 class="mb-0">
+                                Transaction History
+                            </h5>
+
+                            <button
+                                class="btn btn-sm btn-outline-danger"
+                                onclick="clearAll()">
+
+                                Clear All
+
+                            </button>
+
+                        </div>
+
+
+                        <div class="table-responsive">
+
+                            <table class="table align-middle">
+
+                                <thead>
+
+                                    <tr>
+                                        <th>Description</th>
+                                        <th>Category</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Action</th>
+                                    </tr>
+
+                                </thead>
+
+
+                                <tbody id="transactionList">
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+
+
+                        <p
+                            id="emptyMessage"
+                            class="text-center text-muted">
+
+                            No transactions added yet.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer class="text-center py-3 mt-5">
+
+        <p class="mb-0">
+            Student Expense Tracker
+        </p>
+
+    </footer>
+
+
+    <!-- JavaScript -->
+    <script>
+
+        const form =
+            document.getElementById("transactionForm");
+
+        const description =
+            document.getElementById("description");
+
+        const amount =
+            document.getElementById("amount");
+
+        const type =
+            document.getElementById("type");
+
+        const category =
+            document.getElementById("category");
+
+        const balanceText =
+            document.getElementById("balance");
+
+        const incomeText =
+            document.getElementById("income");
+
+        const expenseText =
+            document.getElementById("expense");
+
+        const transactionList =
+            document.getElementById("transactionList");
+
+        const emptyMessage =
+            document.getElementById("emptyMessage");
+
+
+        // Load saved data
+        let transactions =
+            JSON.parse(localStorage.getItem("transactions")) || [];
+
+
+        // Add transaction
+        form.addEventListener("submit", function(event) {
+
+            event.preventDefault();
+
+
+            const newTransaction = {
+
+                id: Date.now(),
+
+                description:
+                    description.value,
+
+                amount:
+                    Number(amount.value),
+
+                type:
+                    type.value,
+
+                category:
+                    category.value
+            };
+
+
+            transactions.push(newTransaction);
+
+
+            saveTransactions();
+
+            displayTransactions();
+
+
+            form.reset();
+
+        });
+
+
+        // Save data
+        function saveTransactions() {
+
+            localStorage.setItem(
+                "transactions",
+                JSON.stringify(transactions)
+            );
+
+        }
+
+
+        // Display transactions
+        function displayTransactions() {
+
+            transactionList.innerHTML = "";
+
+
+            if (transactions.length === 0) {
+
+                emptyMessage.style.display = "block";
+
+            }
+
+            else {
+
+                emptyMessage.style.display = "none";
+
+            }
+
+
+            transactions.forEach(function(transaction) {
+
+
+                const row =
+                    document.createElement("tr");
+
+
+                let textClass;
+
+
+                if (transaction.type === "income") {
+
+                    textClass = "income-text";
+
+                }
+
+                else {
+
+                    textClass = "expense-text";
+
+                }
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${transaction.description}
+                    </td>
+
+                    <td>
+                        ${transaction.category}
+                    </td>
+
+                    <td class="${textClass}">
+                        ${transaction.type}
+                    </td>
+
+                    <td class="${textClass}">
+                        ₹${transaction.amount}
+                    </td>
+
+                    <td>
+
+                        <button
+                            class="btn btn-sm btn-danger"
+                            onclick="deleteTransaction(${transaction.id})">
+
+                            Delete
+
+                        </button>
+
+                    </td>
+
+                `;
+
+
+                transactionList.appendChild(row);
+
+            });
+
+
+            calculateTotal();
+
+        }
+
+
+        // Calculate totals
+        function calculateTotal() {
+
+            let totalIncome = 0;
+
+            let totalExpense = 0;
+
+
+            transactions.forEach(function(transaction) {
+
+
+                if (transaction.type === "income") {
+
+                    totalIncome =
+                        totalIncome + transaction.amount;
+
+                }
+
+                else {
+
+                    totalExpense =
+                        totalExpense + transaction.amount;
+
+                }
+
+            });
+
+
+            let balance =
+                totalIncome - totalExpense;
+
+
+            incomeText.innerText =
+                "₹" + totalIncome;
+
+
+            expenseText.innerText =
+                "₹" + totalExpense;
+
+
+            balanceText.innerText =
+                "₹" + balance;
+
+        }
+
+
+        // Delete transaction
+        function deleteTransaction(id) {
+
+            transactions =
+                transactions.filter(function(transaction) {
+
+                    return transaction.id !== id;
+
+                });
+
+
+            saveTransactions();
+
+            displayTransactions();
+
+        }
+
+
+        // Clear all transactions
+        function clearAll() {
+
+            if (transactions.length === 0) {
+
+                return;
+
+            }
+
+
+            let answer =
+                confirm("Delete all transactions?");
+
+
+            if (answer) {
+
+                transactions = [];
+
+                saveTransactions();
+
+                displayTransactions();
+
+            }
+
+        }
+
+
+        // Run when page opens
+        displayTransactions();
+
+    </script>
+
+</body>
+</html>
